@@ -7,14 +7,15 @@
       <!-- Logo -->
       <router-link
         to="/"
-        class="theme-wordmark group relative flex items-center justify-center overflow-hidden"
+        class="group relative flex items-center justify-center"
+        :class="brandLogoSrc && !brandLogoErrored ? 'theme-logo-mark' : 'theme-wordmark'"
         :title="brandSiteName"
         :aria-label="brandSiteName">
         <img
           v-if="brandLogoSrc && !brandLogoErrored"
           :src="brandLogoSrc"
           :alt="brandSiteName"
-          class="h-7 max-w-[136px] object-contain"
+          class="theme-logo-image"
           decoding="async"
           @error="brandLogoErrored = true" />
         <span v-else class="theme-wordmark-text">{{ brandSiteName }}</span>

@@ -377,6 +377,7 @@ const orderLoaded = ref(false)
 const orders = ref<any[]>([])
 const orderPagination = ref({ page: 1, page_size: 20, total: 0, total_page: 1 })
 const orderFilters = reactive({ orderNo: '', status: '' })
+const orderStats = ref<Record<string, number>>({})
 
 const orderStatusOptions = computed(() => [
   { value: '', label: t('orders.filters.statusAll') },
@@ -397,8 +398,14 @@ const currentOrderStatusLabel = computed(() => {
   const selected = orderStatusOptions.value.find((item) => item.value === orderFilters.status)
   return selected?.label || t('orders.filters.statusAll')
 })
-const pendingPaymentCount = computed(() => orders.value.filter((o) => o.status === 'pending_payment').length)
-const finishedCount = computed(() => orders.value.filter((o) => o.status === 'delivered' || o.status === 'completed' || o.status === 'partially_refunded' || o.status === 'refunded').length)
+const pendingPaymentCount = computed(() => orderStats.value['pending_payment'] || 0)
+const finishedCount = computed(
+  () =>
+    (orderStats.value['delivered'] || 0) +
+    (orderStats.value['completed'] || 0) +
+    (orderStats.value['partially_refunded'] || 0) +
+    (orderStats.value['refunded'] || 0),
+)
 
 const loadOrders = async (page = 1) => {
   orderLoading.value = true
@@ -416,6 +423,20 @@ const loadOrders = async (page = 1) => {
     orders.value = []
   } finally {
     orderLoading.value = false
+  }
+  void loadOrderStats()
+}
+
+const loadOrderStats = async () => {
+  const orderNo = orderFilters.orderNo
+  try {
+    const response = await userOrderAPI.stats({ order_no: orderNo || undefined })
+    if (orderFilters.orderNo !== orderNo) return
+    orderStats.value = response.data.data?.by_status || {}
+  } catch {
+    if (orderFilters.orderNo === orderNo) {
+      orderStats.value = {}
+    }
   }
 }
 
@@ -444,6 +465,7 @@ const rechargeLoaded = ref(false)
 const rechargeOrders = ref<any[]>([])
 const rechargePagination = ref({ page: 1, page_size: 20, total: 0, total_page: 1 })
 const rechargeFilters = reactive({ rechargeNo: '', status: '' })
+const rechargeStats = ref<Record<string, number>>({})
 
 const rechargeStatusOptions = computed(() => [
   { value: '', label: t('orders.filters.statusAll') },
@@ -453,7 +475,7 @@ const rechargeStatusOptions = computed(() => [
   { value: 'expired', label: t('personalCenter.wallet.rechargeStatus.expired') },
 ])
 
-const rechargePendingCount = computed(() => rechargeOrders.value.filter((o) => o.status === 'pending').length)
+const rechargePendingCount = computed(() => rechargeStats.value['pending'] || 0)
 
 const loadRechargeOrders = async (page = 1) => {
   rechargeLoading.value = true
@@ -471,6 +493,20 @@ const loadRechargeOrders = async (page = 1) => {
     rechargeOrders.value = []
   } finally {
     rechargeLoading.value = false
+  }
+  void loadRechargeStats()
+}
+
+const loadRechargeStats = async () => {
+  const rechargeNo = rechargeFilters.rechargeNo
+  try {
+    const response = await walletAPI.rechargeStats({ recharge_no: rechargeNo || undefined })
+    if (rechargeFilters.rechargeNo !== rechargeNo) return
+    rechargeStats.value = response.data.data?.by_status || {}
+  } catch {
+    if (rechargeFilters.rechargeNo === rechargeNo) {
+      rechargeStats.value = {}
+    }
   }
 }
 

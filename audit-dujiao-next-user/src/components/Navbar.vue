@@ -5,8 +5,19 @@
     :style="{ transitionDuration: 'var(--ui-duration-normal)' }">
     <div class="container mx-auto px-4 flex items-center justify-between gap-4">
       <!-- Logo -->
-      <router-link to="/" class="theme-wordmark group relative" :title="brandSiteName">
-        <span class="theme-wordmark-text">{{ brandSiteName }}</span>
+      <router-link
+        to="/"
+        class="theme-wordmark group relative flex items-center justify-center overflow-hidden"
+        :title="brandSiteName"
+        :aria-label="brandSiteName">
+        <img
+          v-if="brandLogoSrc && !brandLogoErrored"
+          :src="brandLogoSrc"
+          :alt="brandSiteName"
+          class="h-7 max-w-[136px] object-contain"
+          decoding="async"
+          @error="brandLogoErrored = true" />
+        <span v-else class="theme-wordmark-text">{{ brandSiteName }}</span>
       </router-link>
 
       <!-- Desktop Menu -->
@@ -236,6 +247,7 @@ const showMobileMenu = ref(false)
 const showLangMenu = ref(false)
 const scrolled = ref(false)
 const cartBounce = ref(false)
+const brandLogoErrored = ref(false)
 
 const isListMode = computed(() => appStore.config?.template_mode === 'list')
 
@@ -351,6 +363,16 @@ const cartCount = computed(() => cartStore.totalItems)
 
 const brandSiteName = computed(() => {
   return appStore.siteName
+})
+
+const brandLogoSrc = computed(() => {
+  const href = String(appStore.siteIconHref || '').trim()
+  if (!href || href === '/dj.svg') return ''
+  return href
+})
+
+watch(brandLogoSrc, () => {
+  brandLogoErrored.value = false
 })
 
 const toggleMobileMenu = () => {

@@ -107,8 +107,7 @@ const appStore = useAppStore()
 const config = computed(() => appStore.config)
 
 const brandSiteName = computed(() => {
-  const siteName = config.value?.brand?.site_name
-  return typeof siteName === 'string' && siteName.trim() ? siteName.trim() : 'Toplenged'
+  return appStore.siteName
 })
 
 const brandDescription = computed(() => {

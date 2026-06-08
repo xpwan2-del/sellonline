@@ -257,8 +257,7 @@ const appStore = useAppStore()
 const { t } = useI18n()
 
 const brandSiteName = computed(() => {
-  const siteName = String(appStore.config?.brand?.site_name || '').trim()
-  return siteName !== '' ? siteName : 'Toplenged'
+  return appStore.siteName
 })
 
 const email = ref('')

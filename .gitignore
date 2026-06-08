@@ -1,0 +1,31 @@
+.DS_Store
+
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+.cache/
+.playwright-cli/
+
+# Local and environment config
+.env
+.env.*
+!.env.example
+.vercel/
+
+# Runtime data must stay on each server
+*.db
+*.sqlite
+*.sqlite3
+uploads/
+storage/
+logs/
+
+# Local deployment artifacts and keys
+deploy-artifacts/
+codex_ssh_keys/
+*.pem
+*.key
+id_rsa
+id_ed25519
+known_hosts*

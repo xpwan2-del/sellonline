@@ -1,5 +1,4 @@
 {
-  "ignoreCommand": "node scripts/vercel-ignore-by-branch.mjs",
   "rewrites": [
     {
       "source": "/(.*)",

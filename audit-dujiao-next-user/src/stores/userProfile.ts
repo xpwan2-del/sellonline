@@ -35,6 +35,7 @@ export const useUserProfileStore = defineStore('user-profile', () => {
 
     const profile = ref<UserProfileData | null>(null)
     const recentOrders = ref<PersonalOrderSummary[]>([])
+    const ordersTotal = ref(0)
     const recentLoginLogs = ref<UserLoginLogItem[]>([])
     const telegramBinding = ref<TelegramBindingData | null>(null)
     const memberLevels = ref<PublicMemberLevel[]>([])
@@ -196,9 +197,11 @@ export const useUserProfileStore = defineStore('user-profile', () => {
             const response = await userOrderAPI.list({ page: 1, page_size: limit })
             const data = response.data.data
             recentOrders.value = Array.isArray(data) ? (data as PersonalOrderSummary[]) : []
+            ordersTotal.value = response.data.pagination?.total ?? recentOrders.value.length
             return true
         } catch {
             recentOrders.value = []
+            ordersTotal.value = 0
             return false
         } finally {
             loadingOrders.value = false
@@ -285,6 +288,7 @@ export const useUserProfileStore = defineStore('user-profile', () => {
     return {
         profile,
         recentOrders,
+        ordersTotal,
         recentLoginLogs,
         telegramBinding,
         memberLevels,

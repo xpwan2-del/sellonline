@@ -109,6 +109,7 @@ export const useAppStore = defineStore('app', () => {
         config,
         loading,
         serverTimeOffset,
+        siteIconHref,
         siteName,
         siteURL,
         setLocale,

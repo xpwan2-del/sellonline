@@ -23,7 +23,7 @@
             <div class="rounded-2xl border theme-surface-soft px-4 py-3">
               <p class="text-[11px] uppercase tracking-[0.16em] text-gray-400">{{ t('personalCenter.tabs.orders') }}</p>
               <p class="mt-2 text-sm font-semibold theme-text-secondary">
-                {{ userProfileStore.loadingOrders ? '-' : userProfileStore.recentOrders.length }}
+                {{ userProfileStore.loadingOrders ? '-' : userProfileStore.ordersTotal }}
               </p>
             </div>
             <div class="rounded-2xl border theme-surface-soft px-4 py-3">

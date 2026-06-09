@@ -412,6 +412,39 @@ html[data-telegram-mini-app="true"] body {
     box-shadow: 0 0 0 3px var(--ui-focus-ring);
   }
 
+  .theme-logo-mark {
+    @apply inline-flex items-center;
+    min-height: 2.5rem;
+    max-width: min(52vw, 11rem);
+    color: var(--ui-text-primary);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .theme-logo-mark:hover {
+    opacity: 0.9;
+  }
+
+  .theme-logo-mark:focus-visible {
+    outline: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0 3px var(--ui-focus-ring);
+  }
+
+  .theme-logo-image {
+    display: block;
+    width: auto;
+    height: 2.25rem;
+    max-width: min(52vw, 11rem);
+    object-fit: contain;
+  }
+
+  @media (min-width: 640px) {
+    .theme-logo-image {
+      height: 2.5rem;
+      max-width: 12.5rem;
+    }
+  }
+
   .theme-wordmark-text {
     @apply block;
     font-size: 1rem;

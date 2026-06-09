@@ -10,6 +10,7 @@ export const walletAPI = {
     transactions: (params?: any) => userApi.get('/wallet/transactions', { params }),
     recharge: (data: WalletRechargePayload) => userApi.post('/wallet/recharge', data),
     rechargeOrders: (params?: any) => userApi.get('/wallet/recharges', { params }),
+    rechargeStats: (params?: any) => userApi.get('/wallet/recharges/stats', { params }),
     rechargeDetail: (rechargeNo: string) =>
         userApi.get(`/wallet/recharges/${encodeURIComponent(rechargeNo)}`),
     captureRechargePayment: (paymentID: number) =>

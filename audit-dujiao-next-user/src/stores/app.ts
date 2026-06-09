@@ -14,6 +14,13 @@ export const useAppStore = defineStore('app', () => {
         const siteIcon = String(config.value?.brand?.site_icon || '').trim()
         return siteIcon ? getImageUrl(siteIcon) : '/dj.svg'
     })
+    const siteName = computed(() => {
+        const name = String(config.value?.brand?.site_name || '').trim()
+        return name || 'Site'
+    })
+    const siteURL = computed(() => {
+        return String(config.value?.brand?.site_url || '').trim().replace(/\/+$/, '')
+    })
 
     // 设置语言
     const setLocale = (newLocale: string) => {
@@ -102,6 +109,9 @@ export const useAppStore = defineStore('app', () => {
         config,
         loading,
         serverTimeOffset,
+        siteIconHref,
+        siteName,
+        siteURL,
         setLocale,
         loadConfig,
         applySEO,

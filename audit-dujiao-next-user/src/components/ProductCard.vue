@@ -14,7 +14,7 @@
       ></div>
       <img v-if="displayImageSrc && !imageErrored" :src="displayImageSrc"
         :alt="getLocalizedText(product.title)" loading="lazy" decoding="async"
-        class="w-full h-full object-contain transform transition-transform duration-700 ease-out"
+        class="w-full h-full object-cover transform transition-transform duration-700 ease-out"
         :class="[
           isSoldOut(product) ? 'grayscale brightness-75' : 'group-hover:scale-105',
         ]"

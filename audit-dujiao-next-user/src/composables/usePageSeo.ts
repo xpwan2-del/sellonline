@@ -2,7 +2,6 @@ import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useAppStore } from '../stores/app'
 import { getImageUrl } from '../utils/image'
-import { normalizeBrandText } from '../utils/brand'
 
 export interface PageSeoOptions {
   /** 页面专属标题；若与站点名相同，仅展示站点名 */
@@ -46,15 +45,15 @@ export function usePageSeo(options: PageSeoOptions = {}) {
     const lang = appStore.locale
     const seo = appStore.config?.seo
     const localized = seo?.title?.[lang]
-    if (localized && String(localized).trim()) return normalizeBrandText(localized)
-    return appStore.siteName
+    if (localized && String(localized).trim()) return String(localized).trim()
+    return String(appStore.config?.brand?.site_name || '').trim()
   })
 
   const siteDescription = computed(() => {
     const lang = appStore.locale
     const seo = appStore.config?.seo
     const localized = seo?.description?.[lang]
-    return localized ? normalizeBrandText(localized) : ''
+    return localized ? String(localized).trim() : ''
   })
 
   const defaultImage = computed(() => {

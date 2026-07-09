@@ -100,6 +100,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../stores/app'
 import { getImageUrl } from '../utils/image'
+import { normalizeBrandText } from '../utils/brand'
 
 const { t } = useI18n()
 const appStore = useAppStore()
@@ -114,7 +115,7 @@ const brandDescription = computed(() => {
   const desc = config.value?.brand?.site_description
   if (desc && typeof desc === 'object') {
     const val = desc[appStore.locale] || desc['zh-CN'] || ''
-    return typeof val === 'string' ? val.trim() : ''
+    return normalizeBrandText(val)
   }
   return ''
 })

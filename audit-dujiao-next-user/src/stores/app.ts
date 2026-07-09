@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { configAPI } from '../api'
 import { getImageUrl } from '../utils/image'
+import { normalizeBrandText, resolveSiteName } from '../utils/brand'
 import { useHead } from '@unhead/vue'
 
 export const useAppStore = defineStore('app', () => {
@@ -15,8 +16,7 @@ export const useAppStore = defineStore('app', () => {
         return siteIcon ? getImageUrl(siteIcon) : '/dj.svg'
     })
     const siteName = computed(() => {
-        const name = String(config.value?.brand?.site_name || '').trim()
-        return name || 'Site'
+        return resolveSiteName(config.value?.brand?.site_name)
     })
     const siteURL = computed(() => {
         return String(config.value?.brand?.site_url || '').trim().replace(/\/+$/, '')
@@ -37,9 +37,8 @@ export const useAppStore = defineStore('app', () => {
             const seo = config.value?.seo
             const lang = locale.value
             const localized = seo?.title?.[lang]
-            if (localized) return String(localized).trim() || undefined
-            const siteName = String(config.value?.brand?.site_name || '').trim()
-            return siteName || undefined
+            if (localized) return normalizeBrandText(localized) || undefined
+            return siteName.value
         },
         link: () => [{ key: 'favicon', rel: 'icon', href: siteIconHref.value }],
         meta: () => {
@@ -48,10 +47,10 @@ export const useAppStore = defineStore('app', () => {
             const lang = locale.value
             const tags: Array<{ name?: string; property?: string; content: string }> = []
             if (seo.keywords && seo.keywords[lang]) {
-                tags.push({ name: 'keywords', content: String(seo.keywords[lang]) })
+                tags.push({ name: 'keywords', content: normalizeBrandText(seo.keywords[lang]) })
             }
             if (seo.description && seo.description[lang]) {
-                tags.push({ name: 'description', content: String(seo.description[lang]) })
+                tags.push({ name: 'description', content: normalizeBrandText(seo.description[lang]) })
             }
             return tags
         }
